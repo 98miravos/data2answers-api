@@ -4,7 +4,19 @@ import os
 
 app = Flask(__name__)
 
-DB_PATH = os.environ.get("DB_PATH", "restaurant.db")
+DB_PATH = "restaurant.db"
+CSV_PATH = "US_Restaurant_Chain_Example_Data_Matrix.csv"
+
+def init_db():
+    con = duckdb.connect(DB_PATH)
+    con.execute(f"""
+        CREATE TABLE IF NOT EXISTS menu_data AS 
+        SELECT * FROM read_csv_auto('{CSV_PATH}')
+    """)
+    con.close()
+    print("Database initialised successfully")
+
+init_db()
 
 @app.route("/query", methods=["POST"])
 def query():
