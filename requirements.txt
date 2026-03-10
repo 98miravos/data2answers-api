@@ -1,3 +1,5 @@
 flask
 duckdb
 gunicorn
+numpy
+pandas
